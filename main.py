@@ -64,8 +64,6 @@ def calculate_request_standard_deviations(caches, request_standard_deviations):
 		request_standard_deviations[value]['standard_deviation'] = request_standard_deviations[value]['standard_deviation'] / (request_standard_deviations[value]['n'] - 1)
 		request_standard_deviations[value]['standard_deviation'] = math.sqrt(abs(request_standard_deviations[value]['standard_deviation']))
 
-# data = Parser().process_file('kittens.in')
-
 # print(data)
 
 availability_threshold = 10
@@ -114,4 +112,3 @@ for cache in caches:
 				cache['store'].append(request['video_id'])
 			else:
 				print("Soz!")
-

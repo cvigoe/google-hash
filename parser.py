@@ -11,7 +11,7 @@ class Parser:
         self.parseEndpointDescriptions()
         self.parseRequestDescriptions()
         self.buildCacheLookupStructure()
-        print self.data["caches"]
+        # print self.data["caches"]
 
     def parseMetaData(self):
         startingLine = 0
@@ -59,8 +59,8 @@ class Parser:
     def parseRequestDescriptions(self):
         rCounter = 0
         startingLine = self.lastLineProcessed + 1
-        print startingLine
-        print self.data['R']
+        # print startingLine
+        # print self.data['R']
         while (rCounter < (self.data['R']-1)):
             splitedLine = self.dataFile[startingLine+rCounter].split(' ')
             requestedVideoId = int(splitedLine[0])

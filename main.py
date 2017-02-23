@@ -43,7 +43,7 @@ def calculate_request_means(caches, request_means):
 			request_means[cache['cache_id']]['n'] += 1
 
 	for stat in request_means:
-		stat['mean'] = stat['mean'] / stat['n']	
+		stat['mean'] = stat['mean'] / stat['n']
 
 
 def calculate_request_standard_deviations(caches, request_standard_deviations):
@@ -54,7 +54,7 @@ def calculate_request_standard_deviations(caches, request_standard_deviations):
 
 	for stat in request_standard_deviations:
 		stat['standard_deviation'] = stat['standard_deviation'] / (stat['n'] - 1)
-		stat['standard_deviation'] = math.sqrt(abs(stat['standard_deviation']))	
+		stat['standard_deviation'] = math.sqrt(abs(stat['standard_deviation']))
 
 
 
@@ -89,4 +89,3 @@ for cache in caches:
 				cache['store'].append(request['video_id'])
 			else:
 				print("Soz!")
-

@@ -11,7 +11,8 @@ class Parser:
         self.parseEndpointDescriptions()
         self.parseRequestDescriptions()
         self.buildCacheLookupStructure()
-        print self.data["caches"]
+        self.buildArrayOfEndPoints()
+        self.data['cachesAsArrays'] = self.buildArrayOfCaches(self.data)
 
     def parseMetaData(self):
         startingLine = 0
@@ -38,10 +39,10 @@ class Parser:
 
             endpointName = counter
             self.data['endpoints'][endpointName] = {}
-            self.data['endpoints'][endpointName]['L'] = int(firstLineInDescription[0])
+            self.data['endpoints'][endpointName]['data_centre_latency'] = int(firstLineInDescription[0])
             self.data['endpoints'][endpointName]['K'] = int(firstLineInDescription[1])
             self.data['endpoints'][endpointName]['requests'] = {}
-            self.data['endpoints'][endpointName]['connections'] = {}
+            self.data['endpoints'][endpointName]['caches'] = {}
 
             kCounter = 0
             while(kCounter < self.data['endpoints'][endpointName]['K']):
@@ -49,7 +50,7 @@ class Parser:
                 splitedLine = self.dataFile[lineNumber].split(' ')
                 cacheId = int(splitedLine[0])
                 latency = int(splitedLine[1])
-                self.data['endpoints'][endpointName]['connections'][cacheId] = {"latency": latency}
+                self.data['endpoints'][endpointName]['caches'][cacheId] = {"cache_latency": latency}
                 kCounter += 1
             counter += 1
 
@@ -59,8 +60,7 @@ class Parser:
     def parseRequestDescriptions(self):
         rCounter = 0
         startingLine = self.lastLineProcessed + 1
-        print startingLine
-        print self.data['R']
+
         while (rCounter < (self.data['R']-1)):
             splitedLine = self.dataFile[startingLine+rCounter].split(' ')
             requestedVideoId = int(splitedLine[0])
@@ -79,7 +79,7 @@ class Parser:
         endPointIds = self.data['endpoints'].keys()
         for endPointId in endPointIds:
             endPoint = self.data['endpoints'][endPointId]
-            cacheIds = endPoint['connections'].keys()
+            cacheIds = endPoint['caches'].keys()
             for cacheId in cacheIds:
                 self.data["caches"][cacheId] = {
                     "requests": endPoint['requests'],
@@ -87,9 +87,33 @@ class Parser:
                     "available": self.data['X']
                 }
 
+    def buildArrayOfEndPoints(self):
+        endpoints = []
+        for endPointId in self.data['endpoints'].keys():
+            endpoint = self.data['endpoints'][endPointId]
+            endpoint['endpoint_id'] = endPointId
+            endpoint['requests'] = self.buildArrayOfRequests(endpoint, )
+            endpoint['caches'] = self.buildArrayOfCaches(endpoint)
+            endpoints.append(endpoint)
+        self.data['endpointsAsArray'] = endpoints
 
+    def buildArrayOfCaches(self, endpoint):
+        caches = []
+        for cacheId in endpoint['caches'].keys():
+            cache = endpoint['caches'][cacheId]
+            if "requests" in cache:
+                cache['requests'] = self.buildArrayOfRequests(cache)
+            cache['cache_id'] = cacheId
+            caches.append(cache)
+        return caches
 
-
-
+    def buildArrayOfRequests(self, endpoint, endpoints = []):
+        requests = []
+        for requestId in endpoint['requests'].keys():
+            request = endpoint['requests'][requestId]
+            request['endpoints'] = endpoints
+            request['request_id'] = requestId
+            requests.append(request)
+        return requests
 
 Parser().process_file('kittens.in')

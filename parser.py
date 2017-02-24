@@ -13,7 +13,7 @@ class Parser:
         self.buildCacheLookupStructure()
         self.buildArrayOfEndPoints()
         self.data['cachesAsArrays'] = self.buildArrayOfCaches(self.data)
-
+        return self.data
     def parseMetaData(self):
         startingLine = 0
         splitedLine = self.dataFile[startingLine].split(' ')
@@ -60,12 +60,7 @@ class Parser:
     def parseRequestDescriptions(self):
         rCounter = 0
         startingLine = self.lastLineProcessed + 1
-<<<<<<< HEAD
-        # print startingLine
-        # print self.data['R']
-=======
 
->>>>>>> 6346b7420a6e68060a955d0a7105d510be30fe8e
         while (rCounter < (self.data['R']-1)):
             splitedLine = self.dataFile[startingLine+rCounter].split(' ')
             requestedVideoId = int(splitedLine[0])

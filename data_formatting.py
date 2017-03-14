@@ -16,7 +16,6 @@ request_standard_deviations = {cache_id: {'standard_deviation': 0, 'n': 0},
 							   cache_id: {'standard_deviation': 0, 'n': 0}}
 
 
-
 # Data data structures
 endpoints = { endpoint_id: {'cache_latencies': { cache_id: cache_latency, cache_id: cache_latency, cache_id: cache_latency, cache_id: cache_latency }, 'data_centre_latency': 2000},
 			  endpoint_id: {'cache_latencies': {}, 'data_centre_latency': 3000},

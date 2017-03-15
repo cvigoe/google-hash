@@ -38,7 +38,6 @@ class Parser:
 
         while(counter < self.data['E']):
             firstLineInDescription = self.dataFile[startingLine].split(' ')
-
             endpoint_id = counter
             self.data['endpoints'][endpoint_id] = {}
             self.data['endpoints'][endpoint_id]['data_centre_latency'] = int(firstLineInDescription[0])
@@ -54,18 +53,18 @@ class Parser:
                 self.data['endpoints'][endpoint_id]['cache_latencies'][cache_id] = latency
                 number_of_caches_counter += 1
             counter += 1
-            print('Endpoint: ' + str(endpoint_id))
-
+            if(number_of_caches_counter == 0):
+                lineNumber += 1
             startingLine = lineNumber + 1
         self.lastLineProcessed = startingLine
 
     def parseRequestDescriptions(self):
         print('Parsing Request Descriptions...')
         rCounter = 0
-        startingLine = self.lastLineProcessed + 1
+        startingLine = self.lastLineProcessed
 
         while (rCounter < (self.data['R'])):
-            splitedLine = self.dataFile[startingLine+rCounter-1].split(' ')
+            splitedLine = self.dataFile[startingLine+rCounter].split(' ')
             requestedVideoId = int(splitedLine[0])
             idOfEndpointThatRequestsAreComingFrom = int(splitedLine[1])
             numberOfRequests = int(splitedLine[2])
